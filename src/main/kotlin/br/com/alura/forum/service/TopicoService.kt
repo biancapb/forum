@@ -1,74 +1,50 @@
 package br.com.alura.forum.service
 
-import br.com.alura.forum.model.Curso
+import br.com.alura.forum.dto.TopicoForm
+import br.com.alura.forum.dto.TopicoView
 import br.com.alura.forum.model.Topico
-import br.com.alura.forum.model.Usuario
 import org.springframework.stereotype.Service
 import java.util.*
+import java.util.stream.Collectors
 
 @Service
-class TopicoService(private var topicos: List<Topico>) {
+class TopicoService(private var topicos: List<Topico> = ArrayList(),
+                    private val curso: CursoService,
+                    private val usuario: UsuarioService
+                    ) {
 
-    init {
-        val topico = Topico(
-            id = 1,
-            title = "Duvidas sobre Kotlin",
-            message = "Como criar uma lista utilizando Kotlin?",
-            course = Curso(
-                id = 1,
-                name = "Kotlin",
-                category = "Programação"
-            ),
-            user = Usuario(
-                id = 1,
-                name = "Bianca",
-                email = "bpbarbosa.developer@gmail.com"
-            )
-        )
-
-        val segundoTopico = Topico(
-            id = 2,
-            title = "Como instanciar classe em Java?",
-            message = "Eu estou com dúvidas sobre instanciamento de classes na linguagem Java",
-            course = Curso(
-                id = 2,
-                name = "Java",
-                category = "Programação"
-            ),
-            user = Usuario(
-                id = 2,
-                name = "Luana",
-                email = "luana.gonzales@gmail.com"
-            )
-        )
-
-        val terceiroTopico = Topico(
-            id = 3,
-            title = "Qual a diferença de UX e UI Design?",
-            message = "Estava querendo saber qual a diferença??",
-            course = Curso(
-                id = 3,
-                name = "Introdução a UX/UI Design",
-                category = "UX/UI Design"
-            ),
-            user = Usuario(
-                id = 3,
-                name = "Nathan",
-                email = "nathan@hotmail.com"
-            )
-        )
-
-        topicos = Arrays.asList(topico, segundoTopico, terceiroTopico)
-
+    fun listar(): List<TopicoView> /*lista os tópicos*/ {
+        return topicos.stream().map { t -> TopicoView(
+            id = t.id,
+            title = t.title,
+            message = t.message,
+            date = t.dateCreation,
+            status = t.status
+        ) }.collect(Collectors.toList())
     }
 
-    fun listar(): List<Topico> /*lista os tópicos*/ {
-        return topicos
+    fun buscarPorId(id: Long): TopicoView {
+        val topico = topicos.stream().filter { topicos ->
+            topicos.id == id
+        }.findFirst().get()
+
+        return TopicoView(
+            id = topico.id,
+            title = topico.title,
+            message = topico.message,
+            date = topico.dateCreation,
+            status = topico.status
+        )
     }
 
-    fun listarPorId(id: Long): Topico {
-        return topicos.stream().filter ({
-            topicos -> topicos.id == id
-        }).findFirst().get()
+    fun cadastrar(form: TopicoForm) /*DTO de entrada*/ {
+        topicos = topicos.plus(
+            Topico(
+                id = topicos.size.toLong() + 1,
+                title = form.title,
+                message = form.message,
+                course = curso.buscarPorId(form.idCourse),
+                user = usuario.buscarPorId(form.idUser)
+        ))
     }
 }

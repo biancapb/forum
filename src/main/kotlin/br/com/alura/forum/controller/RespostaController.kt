@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/topicos/{id}/respostas")
+@RequestMapping("/topicos/respostas")
 class RespostaController(private val service: RespostaService) {
 
-    @GetMapping
+    @GetMapping("/{id}")
     fun respostas(@PathVariable id: Long): List<Resposta> {
         return service.respostas(id)
     }
