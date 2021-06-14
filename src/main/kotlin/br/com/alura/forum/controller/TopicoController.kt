@@ -5,6 +5,7 @@ import br.com.alura.forum.dto.TopicoView
 import br.com.alura.forum.model.*
 import br.com.alura.forum.service.TopicoService
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 /*CONTROLLER: receber as requisições dos clientes e fazer a manipulação*/
 
@@ -25,7 +26,7 @@ class TopicoController(private val service: TopicoService) {
     /*postando informação*/
     @PostMapping
     fun cadastrar(
-        @RequestBody form: TopicoForm /*procurar as informações necessárias para criar o objeto topico no corpo da requisição*/
+        @RequestBody @Valid form: TopicoForm /*procurar as informações necessárias para criar o objeto topico no corpo da requisição*/
     ) {
         return service.cadastrar(form)
     }

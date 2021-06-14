@@ -4,7 +4,9 @@ import br.com.alura.forum.dto.TopicoForm
 import br.com.alura.forum.model.Topico
 import br.com.alura.forum.service.CursoService
 import br.com.alura.forum.service.UsuarioService
+import org.springframework.stereotype.Component
 
+@Component
 class TopicoFormMapper(
         private val curso: CursoService,
         private val usuario: UsuarioService

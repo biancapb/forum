@@ -1,5 +1,8 @@
 package br.com.alura.forum.service
 
+import br.com.alura.forum.dto.RespostaForm
+import br.com.alura.forum.mapper.RespostaFormMapper
+import br.com.alura.forum.mapper.TopicoFormMapper
 import br.com.alura.forum.model.Curso
 import br.com.alura.forum.model.Resposta
 import br.com.alura.forum.model.Topico
@@ -10,7 +13,8 @@ import java.util.stream.Collector
 import java.util.stream.Collectors
 
 @Service
-class RespostaService(private var respostas: List<Resposta>) {
+class RespostaService(private var respostas: List<Resposta>,
+                      private val respostaFormMapper: RespostaFormMapper) {
 
     init {
         val primeiraResposta = Resposta(
@@ -45,5 +49,9 @@ class RespostaService(private var respostas: List<Resposta>) {
         return respostas.stream().filter { r ->
             r.topic.id == idTopico
         }.collect(Collectors.toList())
+    }
+
+    fun cadastrar(form: RespostaForm, id: Long) {
+        //val resposta = respostaFormMapper.map(form)
     }
 }

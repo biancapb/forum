@@ -11,7 +11,6 @@ import java.util.stream.Collectors
 
 @Service
 class TopicoService(private var topicos: List<Topico> = ArrayList(),
-
                     private val topicoViewMapper: TopicoViewMapper,
                     private val topicoFormMapper: TopicoFormMapper) {
 
@@ -28,13 +27,6 @@ class TopicoService(private var topicos: List<Topico> = ArrayList(),
 
         return topicoViewMapper.map(topico)
 
-        /*TopicoView(
-            id = topico.id,
-            title = topico.title,
-            message = topico.message,
-            date = topico.dateCreation,
-            status = topico.status
-        )*/
     }
 
     fun cadastrar(form: TopicoForm) /*DTO de entrada*/ {
