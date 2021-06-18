@@ -1,5 +1,6 @@
 package br.com.alura.forum.service
 
+import br.com.alura.forum.dto.AtualizacaoTopicoForm
 import br.com.alura.forum.dto.TopicoForm
 import br.com.alura.forum.dto.TopicoView
 import br.com.alura.forum.mapper.TopicoFormMapper
@@ -33,5 +34,23 @@ class TopicoService(private var topicos: List<Topico> = ArrayList(),
         val topico = topicoFormMapper.map(form)
         topico.id = topicos.size.toLong() + 1
         topicos = topicos.plus(topico)
+    }
+
+    fun atualizar(form: AtualizacaoTopicoForm) /*atualização*/ {
+        val topico = topicos.stream().filter { topicos ->
+            topicos.id == form.id
+        }.findFirst().get()
+
+        //tudo que não for atualizado, recupera-se do topico, o que for modificado, vem do form
+        topicos = topicos.minus(topico).plus(Topico(
+                id = form.id,
+                title = form.title,
+                message = form.message,
+                user = topico.user,
+                course = topico.course,
+                answer = topico.answer,
+                status = topico.status,
+                dateCreation = topico.dateCreation
+        ))
     }
 }

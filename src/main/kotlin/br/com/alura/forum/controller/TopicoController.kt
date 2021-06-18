@@ -1,8 +1,8 @@
 package br.com.alura.forum.controller
 
+import br.com.alura.forum.dto.AtualizacaoTopicoForm
 import br.com.alura.forum.dto.TopicoForm
 import br.com.alura.forum.dto.TopicoView
-import br.com.alura.forum.model.*
 import br.com.alura.forum.service.TopicoService
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -29,5 +29,10 @@ class TopicoController(private val service: TopicoService) {
         @RequestBody @Valid form: TopicoForm /*procurar as informações necessárias para criar o objeto topico no corpo da requisição*/
     ) {
         return service.cadastrar(form)
+    }
+
+    @PutMapping
+    fun atualizar(@RequestBody @Valid form: AtualizacaoTopicoForm) {
+        return service.atualizar(form)
     }
 }
