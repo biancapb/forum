@@ -7,8 +7,10 @@ import br.com.alura.forum.mapper.TopicoFormMapper
 import br.com.alura.forum.mapper.TopicoViewMapper
 import br.com.alura.forum.model.Topico
 import org.springframework.stereotype.Service
+import org.springframework.web.bind.annotation.DeleteMapping
 import java.util.*
 import java.util.stream.Collectors
+import javax.websocket.server.PathParam
 
 @Service
 class TopicoService(private var topicos: List<Topico> = ArrayList(),
@@ -52,5 +54,13 @@ class TopicoService(private var topicos: List<Topico> = ArrayList(),
                 status = topico.status,
                 dateCreation = topico.dateCreation
         ))
+    }
+
+    fun deletar(id: Long) {
+        val topico = topicos.stream().filter { topicos ->
+            topicos.id == id
+        }.findFirst().get()
+
+        topicos = topicos.minus(topico)
     }
 }

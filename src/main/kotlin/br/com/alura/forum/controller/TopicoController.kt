@@ -6,6 +6,7 @@ import br.com.alura.forum.dto.TopicoView
 import br.com.alura.forum.service.TopicoService
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
+import javax.websocket.server.PathParam
 
 /*CONTROLLER: receber as requisições dos clientes e fazer a manipulação*/
 
@@ -34,5 +35,11 @@ class TopicoController(private val service: TopicoService) {
     @PutMapping
     fun atualizar(@RequestBody @Valid form: AtualizacaoTopicoForm) {
         return service.atualizar(form)
+    }
+
+
+    @DeleteMapping("/{id}")
+    fun deletar(@PathVariable id: Long) {
+        service.deletar(id)
     }
 }
