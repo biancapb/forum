@@ -40,13 +40,12 @@ class TopicoService(private var topicos: List<Topico> = ArrayList(),
         return topicoViewMapper.map(topico)
     }
 
-    fun atualizar(form: AtualizacaoTopicoForm) /*atualização*/ {
+    fun atualizar(form: AtualizacaoTopicoForm) : TopicoView /*atualização*/ {
         val topico = topicos.stream().filter { topicos ->
             topicos.id == form.id
         }.findFirst().get()
 
-        //tudo que não for atualizado, recupera-se do topico, o que for modificado, vem do form
-        topicos = topicos.minus(topico).plus(Topico(
+        val topicoAtualizado = Topico(
                 id = form.id,
                 title = form.title,
                 message = form.message,
@@ -55,7 +54,11 @@ class TopicoService(private var topicos: List<Topico> = ArrayList(),
                 answer = topico.answer,
                 status = topico.status,
                 dateCreation = topico.dateCreation
-        ))
+        )
+        //tudo que não for atualizado, recupera-se do topico, o que for modificado, vem do form
+        topicos = topicos.minus(topico).plus(topicoAtualizado)
+
+        return topicoViewMapper.map(topicoAtualizado)
     }
 
     fun deletar(id: Long) {
