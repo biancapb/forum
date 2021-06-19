@@ -32,10 +32,12 @@ class TopicoService(private var topicos: List<Topico> = ArrayList(),
 
     }
 
-    fun cadastrar(form: TopicoForm) /*DTO de entrada*/ {
+    fun cadastrar(form: TopicoForm) : TopicoView /*DTO de entrada*/ {
         val topico = topicoFormMapper.map(form)
         topico.id = topicos.size.toLong() + 1
         topicos = topicos.plus(topico)
+
+        return topicoViewMapper.map(topico)
     }
 
     fun atualizar(form: AtualizacaoTopicoForm) /*atualização*/ {
