@@ -12,7 +12,7 @@ class ExceptionHandler {
 
     @ExceptionHandler(NotFoundException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    fun handleNotFount(
+    fun handleNotFound(
             exception: NotFoundException,
             request: HttpServletRequest
     ) : ErrorView {
@@ -23,4 +23,19 @@ class ExceptionHandler {
                 path = request.servletPath
         )
     }
+
+    @ExceptionHandler(Exception::class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    fun handleServerError(
+            exception: Exception,
+            request: HttpServletRequest
+    ) : ErrorView {
+        return ErrorView(
+                status = HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                error = HttpStatus.INTERNAL_SERVER_ERROR.name,
+                message = exception.message,
+                path = request.servletPath
+        )
+    }
+
 }
