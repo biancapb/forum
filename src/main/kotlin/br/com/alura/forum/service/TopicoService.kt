@@ -3,6 +3,7 @@ package br.com.alura.forum.service
 import br.com.alura.forum.dto.AtualizacaoTopicoForm
 import br.com.alura.forum.dto.TopicoForm
 import br.com.alura.forum.dto.TopicoView
+import br.com.alura.forum.exception.NotFoundException
 import br.com.alura.forum.mapper.TopicoFormMapper
 import br.com.alura.forum.mapper.TopicoViewMapper
 import br.com.alura.forum.model.Topico
@@ -15,7 +16,8 @@ import javax.websocket.server.PathParam
 @Service
 class TopicoService(private var topicos: List<Topico> = ArrayList(),
                     private val topicoViewMapper: TopicoViewMapper,
-                    private val topicoFormMapper: TopicoFormMapper) {
+                    private val topicoFormMapper: TopicoFormMapper,
+                    private val notFoundMessage: String = "Valor nao encontrado!") {
 
     fun listar(): List<TopicoView> /*lista os tópicos*/ {
         return topicos.stream().map {
@@ -26,7 +28,9 @@ class TopicoService(private var topicos: List<Topico> = ArrayList(),
     fun buscarPorId(id: Long): TopicoView {
         val topico = topicos.stream().filter { topicos ->
             topicos.id == id
-        }.findFirst().get()
+        }.findFirst().orElseThrow {
+            NotFoundException(notFoundMessage)
+        }
 
         return topicoViewMapper.map(topico)
 
@@ -43,7 +47,9 @@ class TopicoService(private var topicos: List<Topico> = ArrayList(),
     fun atualizar(form: AtualizacaoTopicoForm) : TopicoView /*atualização*/ {
         val topico = topicos.stream().filter { topicos ->
             topicos.id == form.id
-        }.findFirst().get()
+        }.findFirst().orElseThrow {
+            NotFoundException(notFoundMessage)
+        }
 
         val topicoAtualizado = Topico(
                 id = form.id,
@@ -64,7 +70,9 @@ class TopicoService(private var topicos: List<Topico> = ArrayList(),
     fun deletar(id: Long) {
         val topico = topicos.stream().filter { topicos ->
             topicos.id == id
-        }.findFirst().get()
+        }.findFirst().orElseThrow {
+            NotFoundException(notFoundMessage)
+        }
 
         topicos = topicos.minus(topico)
     }
